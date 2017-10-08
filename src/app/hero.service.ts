@@ -1,4 +1,4 @@
-import { Injectable }    from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
@@ -13,21 +13,31 @@ export class HeroService {
 
   constructor(private http: Http) { }
 
+  // Get all heroes
   getHeroes(): Promise<Hero[]> {
     return this.http.get(this.heroesUrl)
       .toPromise()
-      .then(response => response.json().data as Hero[])
+      .then(response => {
+        const heroes = response.json();
+        if (heroes && heroes !== null) {
+          return heroes as Hero[];
+        } else {
+          return [];
+        }
+      })
       .catch(this.handleError);
   }
 
+  // Hero by id
   getHero(id: number): Promise<Hero> {
     const url = `${this.heroesUrl}/${id}`;
     return this.http.get(url)
       .toPromise()
-      .then(response => response.json().data as Hero)
+      .then(response => response.json() as Hero)
       .catch(this.handleError);
   }
 
+  // Delete hero by iid
   delete(id: number): Promise<void> {
     const url = `${this.heroesUrl}/${id}`;
     return this.http.delete(url, {headers: this.headers})
@@ -36,14 +46,16 @@ export class HeroService {
       .catch(this.handleError);
   }
 
+  // Create new hero
   create(name: string): Promise<Hero> {
     return this.http
       .post(this.heroesUrl, JSON.stringify({name: name}), {headers: this.headers})
       .toPromise()
-      .then(res => res.json().data as Hero)
+      .then(res => res.json())
       .catch(this.handleError);
   }
 
+  // Update hero by id
   update(hero: Hero): Promise<Hero> {
     const url = `${this.heroesUrl}/${hero.id}`;
     return this.http
