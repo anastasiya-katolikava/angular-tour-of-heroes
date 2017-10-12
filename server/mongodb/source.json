@@ -1,0 +1,5 @@
+{
+  "local": "mongodb://localhost:27017/heroesdb",
+  "mlab": "mongodb://user:password@ds117935.mlab.com:17935/tour_of_heroes",
+  "use": "local"
+}

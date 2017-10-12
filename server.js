@@ -4,6 +4,11 @@ const http = require('http');
 const bodyParser = require('body-parser');
 
 const api = require('./server/routes/api');
+const crud = require('./server/mongodb/mongodb-hero-resource');
+const heroesData = require('./server/jsondata/heroes');
+
+const heroesJSONFile = 'data-heroes.json';
+const encoding = 'utf8';
 
 const app = express();
 
@@ -22,4 +27,7 @@ app.set('port', port);
 
 const server = http.createServer(app);
 
-server.listen(port, () => console.log(`Tour of heroes running on localhost:${port}`));
+server.listen(port, () => {
+    crud.createDefaultHeroes(heroesData.getHeroes(heroesJSONFile, heroesData));
+    console.log(`Tour of heroes running on localhost:${port}`);
+});
