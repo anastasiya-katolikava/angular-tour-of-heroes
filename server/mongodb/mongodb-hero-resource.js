@@ -35,7 +35,7 @@ function findHeroesByName(req, res, heroName) {
 
 function findHero(req, res, heroId) {
   HeroModel.findOne({
-    id: heroId
+    _id: heroId
   }).exec((errors, hero) => {
     if (errors) {
       return handleError(errors);
@@ -66,8 +66,8 @@ function createDefaultHeroes(heroes) {
   });
 }
 
-function deleteHero(req, res, heroId = 0) {
-  HeroModel.remove({id: heroId}, (errors, hero) => {
+function deleteHero(req, res, heroId) {
+  HeroModel.remove({_id: heroId}, (errors, hero) => {
     if (errors) {
       console.log(errors);
       res.sendStatus(404);
@@ -77,23 +77,16 @@ function deleteHero(req, res, heroId = 0) {
 }
 
 function createHero(req, res, hero) {
-  HeroModel.find('id', function (err, heroIds) {
-    if (err) {
-      return handleError(err);
-    }
-    let id = Math.max.apply(Math, heroIds.map(hero => hero.id));
-    hero.id = id + 1;
-    HeroModel.create(hero, (errors, hero) => {
+   HeroModel.create({name: hero.name}, (errors, hero) => {
       if (errors) {
         console.log(errors);
       }
       res.status(200).json(hero);
     });
-  });
 }
 
 function updateHero(req, res, heroId, hero) {
-  HeroModel.update({id: heroId}, {name: hero.name}, function(errors, updateHero){
+  HeroModel.update({_id: heroId}, {name: hero.name}, function(errors, updateHero){
     if (errors) {
       console.log(errors);
     }

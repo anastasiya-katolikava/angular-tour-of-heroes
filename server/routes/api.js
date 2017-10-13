@@ -41,10 +41,10 @@ router.delete('/heroes/:id', function(req, res){
 });
 
 router.put('/heroes/:id', jsonParser, (req, res) => {
-  if (!req.body || req.params.id != req.body.id) {
+  if (!req.body || req.params.id != req.body._id) {
     return res.sendStatus(400);
   }
-  const heroId = req.body.id;
+  const heroId = req.body._id;
   const heroName = req.body.name;
   heroResource.updateHero(req, res, heroId, {name: heroName});
 });

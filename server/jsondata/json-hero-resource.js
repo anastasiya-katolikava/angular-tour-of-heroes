@@ -26,7 +26,7 @@ function findHero(req, res, heroId) {
   const heroes = heroesData.getHeroes(heroesJSONFile, encoding);
   let heroById = null;
   heroes.forEach((hero) => {
-    if (hero.id == heroId) {
+    if (hero._id == heroId) {
       heroById = hero;
     }
   })
@@ -44,7 +44,7 @@ function createDefaultHeroes(heroes) {
 function deleteHero(req, res, heroId = 0) {
   let heroes = heroesData.getHeroes(heroesJSONFile, encoding);
   const index = heroes.reduce((index, hero, i) => {
-    return (hero.id == heroId) ? i : -1;
+    return (hero._id == heroId) ? i : -1;
   });
   if(index > -1){
     const hero = heroes.splice(index, 1)[0];
@@ -58,9 +58,9 @@ function deleteHero(req, res, heroId = 0) {
 
 function createHero(req, res, hero) {
   const heroes = heroesData.getHeroes(heroesJSONFile, encoding);
-  let id = Math.max.apply(Math, heroes.map((heroOfCollection) => heroOfCollection.id))
+  let id = Math.max.apply(Math, heroes.map((heroOfCollection) => heroOfCollection._id))
   hero = {
-    id: id + 1,
+    _id: id + 1,
     name: req.body.name
   }
   heroes.push(hero);
@@ -72,7 +72,7 @@ function updateHero(req, res, heroId, hero) {
   const heroes = heroesData.getHeroes(heroesJSONFile, encoding);
   let updateHero = null;
   heroes.forEach((oneHero) => {
-    if (oneHero.id == heroId) {
+    if (oneHero._id == heroId) {
       oneHero.name = hero.name;
       updateHero = oneHero;
     }

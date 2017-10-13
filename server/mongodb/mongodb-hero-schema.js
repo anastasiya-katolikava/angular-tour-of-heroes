@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
-
+const uuid = require('node-uuid');
 const HeroSchema = mongoose.Schema;
 
 const HeroModelSchema = new HeroSchema({
-  id: Number,
+  _id: {
+    type: String,
+    default: uuid.v4
+  },
   name: String
 });
 
